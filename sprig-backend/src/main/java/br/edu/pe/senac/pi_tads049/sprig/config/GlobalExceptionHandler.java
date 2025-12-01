@@ -1,6 +1,7 @@
 package br.edu.pe.senac.pi_tads049.sprig.config;
 
 import java.time.LocalDateTime;
+import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -70,6 +71,23 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponseDTO> handleValidationExceptions(
+            MethodArgumentNotValidException ex, WebRequest request) {
+        String errorMessage = ex.getBindingResult().getAllErrors().stream()
+            .map(error -> error.getDefaultMessage())
+            .collect(Collectors.joining("; "));
+
+        ErrorResponseDTO error = new ErrorResponseDTO(
+            LocalDateTime.now(),
+            HttpStatus.BAD_REQUEST.value(),
+            "Validation Error",
+            errorMessage,
+            request.getDescription(false).replace("uri=", "")
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponseDTO> handleGlobalException(
             Exception ex, WebRequest request) {
@@ -77,17 +95,10 @@ public class GlobalExceptionHandler {
             LocalDateTime.now(),
             HttpStatus.INTERNAL_SERVER_ERROR.value(),
             "Internal Server Error",
-            "Ocorreu um erro interno no servidor",
+            "Ocorreu um erro interno no servidor: " + ex.getMessage(),
             request.getDescription(false).replace("uri=", "")
         );
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
     }
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorResponseDTO> handleValidationExceptions(
-            MethodArgumentNotValidException ex) {
-				return null;
-        // Retornar erros de validação formatados
-    }
-
     
 }

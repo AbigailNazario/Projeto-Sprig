@@ -45,10 +45,6 @@ public class Usuario {
 	
 	//get e set
 
-	public Long getCpf() {
-		return cpf;
-	}
-
 	public void setCpf(Long cpf) {
 		this.cpf = cpf;
 	}

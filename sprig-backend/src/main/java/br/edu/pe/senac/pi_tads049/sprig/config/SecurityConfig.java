@@ -50,7 +50,7 @@ public class SecurityConfig {
                 // GESTOR e TÉCNICO - Logística e Estoque
                 .requestMatchers("/logistica/**").hasAnyRole("GESTOR", "TECNICO")
                 .requestMatchers("/estoque/**").hasAnyRole("GESTOR", "TECNICO")
-                .requestMatchers("/armazem/**").hasAnyRole("GESTOR", "TECNICO")
+                .requestMatchers("/armazens/**").hasAnyRole("GESTOR", "TECNICO") // CORRIGIDO: de armazem para armazens
                 .requestMatchers("/lotes/**").hasAnyRole("GESTOR", "TECNICO")
                 .requestMatchers("/motoristas/**").hasAnyRole("GESTOR", "TECNICO")
                 .requestMatchers("/veiculos/**").hasAnyRole("GESTOR", "TECNICO")

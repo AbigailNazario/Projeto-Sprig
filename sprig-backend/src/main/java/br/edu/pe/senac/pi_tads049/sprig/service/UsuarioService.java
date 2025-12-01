@@ -2,6 +2,7 @@ package br.edu.pe.senac.pi_tads049.sprig.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.edu.pe.senac.pi_tads049.sprig.entidades.Usuario;
 import br.edu.pe.senac.pi_tads049.sprig.repositorios.UsuarioRepository;
@@ -15,6 +16,7 @@ public class UsuarioService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Transactional
     public Usuario cadastrarUsuario(Usuario usuario) {
         if (usuarioRepository.existsByEmail(usuario.getEmail())) {
             throw new RuntimeException("E-mail já cadastrado!");
